@@ -2,4 +2,16 @@
 <resources>
     <string name="app_name">HandsOff</string>
     <string name="shizuku_permission_reason">HandsOff needs Shizuku access to remove bloatware and apply privacy settings without root access.</string>
+
+    <!-- Play Store listing -->
+    <string name="store_short_description">Block trackers, mic &amp; camera access. Privacy for everyone.</string>
+    <string name="store_full_description">HandsOff is a universal Android privacy guardian — no root required.\n\n
+• Blocks 250+ ad tracking and spyware domains via a local VPN (your traffic never leaves your device)\n
+• Detects and blocks microphone access in real time\n
+• Detects and blocks camera access in real time\n
+• Alerts you when any app gains dangerous permissions after an update\n
+• Works on every Android device running Android 8+\n\n
+HandsOff is open source, zero-telemetry, and never connects to external servers.
+Privacy is a human right. Not a privilege.</string>
+    <string name="store_whats_new">Initial release — tracker blocking, mic/camera detection, and permission watchdog.</string>
 </resources>

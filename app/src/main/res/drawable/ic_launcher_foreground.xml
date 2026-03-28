@@ -4,17 +4,12 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- HandsOff placeholder icon — replace with final artwork -->
+    <!-- Shield shape -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M54,20 C35.2,20 20,35.2 20,54 C20,72.8 35.2,88 54,88 C72.8,88 88,72.8 88,54 C88,35.2 72.8,20 54,20Z" />
+        android:pathData="M30,14 H78 Q86,14 86,22 L86,58 Q86,80 54,94 Q22,80 22,58 L22,22 Q22,14 30,14 Z" />
+    <!-- Raised-hand stop gesture cut out of the shield (thumb, 4 fingers, palm) -->
     <path
         android:fillColor="#0D1117"
-        android:pathData="M54,32 C41.8,32 32,41.8 32,54 C32,66.2 41.8,76 54,76 C66.2,76 76,66.2 76,54 C76,41.8 66.2,32 54,32Z" />
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M48,44 L48,64 M60,44 L60,64"
-        android:strokeColor="#FFFFFF"
-        android:strokeWidth="5"
-        android:strokeLineCap="round" />
+        android:pathData="M33,40 H39 V62 H33 Z M42,34 H48 V62 H42 Z M51,30 H57 V62 H51 Z M60,34 H66 V62 H60 Z M69,40 H75 V62 H69 Z M33,60 H75 V74 H33 Z" />
 </vector>
