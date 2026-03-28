@@ -1,0 +1,686 @@
+{
+  "version": 1,
+  "updated": "2026-03-27",
+  "packages": [
+    {
+      "package": "com.samsung.android.voc",
+      "name": "Samsung Voice-of-Customer",
+      "description": "Samsung's primary usage telemetry engine. Collects app usage patterns, crash reports, and behavioral data and transmits them to Samsung servers on a daily schedule.",
+      "brand": "samsung",
+      "threat_level": 4,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["telemetry", "analytics"]
+    },
+    {
+      "package": "com.samsung.android.rubin.app",
+      "name": "Samsung Rubin Analytics",
+      "description": "Advanced behavioral analytics. Tracks navigation patterns, scroll depth, dwell time, and feature usage to optimize Samsung products. Runs continuously in background.",
+      "brand": "samsung",
+      "threat_level": 4,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["telemetry", "analytics"]
+    },
+    {
+      "package": "com.samsung.android.mdx",
+      "name": "Samsung MDX Experience Data",
+      "description": "Collects moment-by-moment device interaction data (taps, swipes, transitions) for Samsung UX research. High-frequency background data transmission.",
+      "brand": "samsung",
+      "threat_level": 4,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["telemetry", "analytics"]
+    },
+    {
+      "package": "com.samsung.android.mdx.quickboard",
+      "name": "Samsung MDX QuickBoard",
+      "description": "MDX data collection for keyboard and clipboard usage patterns. Records typing behavior metrics.",
+      "brand": "samsung",
+      "threat_level": 3,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["telemetry", "keyboard"]
+    },
+    {
+      "package": "com.sec.android.diagmonagent",
+      "name": "Samsung Diagnostic Monitor Agent",
+      "description": "Captures detailed device diagnostics including radio signals, app crashes, memory dumps, and sensor readings. Uploads data to Samsung for quality analysis.",
+      "brand": "samsung",
+      "threat_level": 4,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["telemetry", "diagnostics"]
+    },
+    {
+      "package": "com.samsung.android.os.remotelogs",
+      "name": "Samsung Remote Log Service",
+      "description": "Transmits device logs to Samsung servers remotely. Can capture system events, app crashes, and network activity.",
+      "brand": "samsung",
+      "threat_level": 4,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["telemetry", "logging"]
+    },
+    {
+      "package": "com.samsung.android.sdm.config",
+      "name": "Samsung SDM Config Service",
+      "description": "Samsung Device Management configuration service. Receives remote configuration updates from Samsung servers without user awareness.",
+      "brand": "samsung",
+      "threat_level": 3,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["telemetry", "remote-config"]
+    },
+    {
+      "package": "com.samsung.android.knox.analytics.uploader",
+      "name": "Knox Analytics Uploader",
+      "description": "Uploads Knox security analytics data to Samsung enterprise servers. Runs even on non-enterprise consumer phones.",
+      "brand": "samsung",
+      "threat_level": 3,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["telemetry", "analytics", "knox"]
+    },
+    {
+      "package": "com.samsung.android.bixby.agent",
+      "name": "Bixby AI Assistant",
+      "description": "Samsung's voice assistant. Listens for wake words, processes voice commands, and sends voice data to Samsung and AWS servers. Significant battery drain and background usage even when not actively used.",
+      "brand": "samsung",
+      "threat_level": 3,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["assistant", "voice", "tracking"]
+    },
+    {
+      "package": "com.samsung.android.bixby.wakeup",
+      "name": "Bixby Always-On Mic Wakeup",
+      "description": "Keeps the microphone active at all times listening for 'Hi Bixby'. The most privacy-invasive Bixby component — the mic never turns off while this is enabled.",
+      "brand": "samsung",
+      "threat_level": 4,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["microphone", "assistant", "always-on"]
+    },
+    {
+      "package": "com.samsung.android.bixbyvision.framework",
+      "name": "Bixby Vision",
+      "description": "Camera-based AI that analyzes everything you point your camera at — text, food, objects, QR codes. Sends image data to Samsung servers for processing.",
+      "brand": "samsung",
+      "threat_level": 3,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["camera", "assistant", "tracking"]
+    },
+    {
+      "package": "com.samsung.android.bixby.service",
+      "name": "Bixby Background Service",
+      "description": "Background service layer that all Bixby components depend on. Removing this disables all Bixby functionality including wakeup and vision.",
+      "brand": "samsung",
+      "threat_level": 3,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["assistant", "tracking"]
+    },
+    {
+      "package": "com.samsung.android.app.spage",
+      "name": "Samsung Free (Bixby Home)",
+      "description": "The leftmost swipe panel showing Samsung-curated news, ads, and Bixby suggestions. Tracks reading behavior and content engagement.",
+      "brand": "samsung",
+      "threat_level": 2,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "ads", "tracking"]
+    },
+    {
+      "package": "com.samsung.android.visionintelligence",
+      "name": "Samsung Vision Intelligence",
+      "description": "On-device AI vision processing powering text extraction, object recognition, and live translation. Shares anonymized vision data with Samsung.",
+      "brand": "samsung",
+      "threat_level": 2,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["camera", "ai", "tracking"]
+    },
+    {
+      "package": "com.samsung.android.game.gamehome",
+      "name": "Game Launcher",
+      "description": "Samsung's gaming hub. Tracks game sessions, playtime, and in-game purchases. Runs background services even if you never open it.",
+      "brand": "samsung",
+      "threat_level": 2,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "gaming"]
+    },
+    {
+      "package": "com.samsung.android.game.gos",
+      "name": "Game Optimizing Service (GOS)",
+      "description": "Samsung's controversial performance throttling service. Previously throttled 10,000+ apps to save battery without user consent. Runs as a persistent background daemon.",
+      "brand": "samsung",
+      "threat_level": 2,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "performance", "gaming"]
+    },
+    {
+      "package": "com.samsung.android.aremoji",
+      "name": "AR Emoji Studio",
+      "description": "Creates animated 3D avatars using face scanning technology. Stores facial mapping data locally. Safe to disable unless you actively use AR Emoji.",
+      "brand": "samsung",
+      "threat_level": 2,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "camera", "biometric"]
+    },
+    {
+      "package": "com.samsung.android.scloud",
+      "name": "Samsung Cloud",
+      "description": "Backs up contacts, photos, settings, and app data to Samsung's servers. Disable if using Google backup or if you prefer not to send data to Samsung.",
+      "brand": "samsung",
+      "threat_level": 2,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["cloud", "backup", "data-upload"]
+    },
+    {
+      "package": "com.samsung.android.galaxyapps",
+      "name": "Galaxy Store",
+      "description": "Samsung's alternative app store. Schedules background app installation checks and update syncs. Reports installed apps to Samsung.",
+      "brand": "samsung",
+      "threat_level": 2,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "store"]
+    },
+    {
+      "package": "com.samsung.android.app.galaxyclub",
+      "name": "Samsung Galaxy Club",
+      "description": "Samsung loyalty and rewards program app. Tracks purchases and engagement to award points. No functional impact when disabled.",
+      "brand": "samsung",
+      "threat_level": 1,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "marketing"]
+    },
+    {
+      "package": "com.samsung.android.kidsinstaller",
+      "name": "Kids Home",
+      "description": "Samsung's parental control interface. Runs background readiness checks even without active child profiles.",
+      "brand": "samsung",
+      "threat_level": 1,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware"]
+    },
+    {
+      "package": "com.samsung.android.stickercenter",
+      "name": "Samsung Sticker Center",
+      "description": "Downloads and manages animated sticker packs from Samsung servers. Runs periodic background checks for new sticker content.",
+      "brand": "samsung",
+      "threat_level": 1,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware"]
+    },
+    {
+      "package": "com.samsung.android.dynamiclock",
+      "name": "Samsung Dynamic Lock Screen",
+      "description": "Shows Samsung-curated images and ads on the lock screen. Reports which lock screen content you interact with back to Samsung.",
+      "brand": "samsung",
+      "threat_level": 2,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "ads"]
+    },
+    {
+      "package": "com.samsung.android.smartsuggestions",
+      "name": "Samsung Smart Suggestions",
+      "description": "Analyzes your behavior to suggest apps and actions. Reads notifications and app usage to generate suggestions. Data sent to Samsung for model training.",
+      "brand": "samsung",
+      "threat_level": 3,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["tracking", "analytics", "ai"]
+    },
+    {
+      "package": "com.samsung.android.rcs.eab",
+      "name": "RCS Extended Address Book",
+      "description": "Syncs your contacts with Samsung's RCS (Rich Communication Services) infrastructure. Uploads contact identifiers to Samsung and carrier servers.",
+      "brand": "samsung",
+      "threat_level": 3,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["contacts", "data-upload", "carrier"]
+    },
+    {
+      "package": "com.sec.android.app.knoxsetupwizard",
+      "name": "Knox Setup Wizard",
+      "description": "First-run Knox configuration wizard. Safe to disable after device is fully set up.",
+      "brand": "samsung",
+      "threat_level": 1,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "knox"]
+    },
+    {
+      "package": "com.samsung.android.app.sharelive",
+      "name": "Samsung Share Live",
+      "description": "Live screen-sharing feature for Samsung devices. Runs a background listener for incoming share invites.",
+      "brand": "samsung",
+      "threat_level": 1,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware"]
+    },
+    {
+      "package": "com.google.android.gms.location.history",
+      "name": "Google Location History",
+      "description": "A dedicated package separate from Google Play Services core that records everywhere you go and syncs your location timeline to Google servers. Was scheduling 5+ background sync jobs simultaneously on the audit device.",
+      "brand": "google",
+      "threat_level": 5,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["location", "tracking", "data-upload"]
+    },
+    {
+      "package": "com.google.android.hotwordenrollment.okgoogle",
+      "name": "OK Google Hotword Enrollment",
+      "description": "Enrolls and maintains the 'OK Google' voice model. The microphone stays partially active to listen for the wake phrase. Distinct from Google Assistant itself.",
+      "brand": "google",
+      "threat_level": 4,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["microphone", "voice", "always-on"]
+    },
+    {
+      "package": "com.google.android.hotwordenrollment.xgoogle",
+      "name": "Hey Google Hotword Enrollment",
+      "description": "Enrolls the 'Hey Google' voice trigger model. Works alongside OK Google enrollment. Both must be disabled to fully turn off always-on mic listening.",
+      "brand": "google",
+      "threat_level": 4,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["microphone", "voice", "always-on"]
+    },
+    {
+      "package": "com.google.android.onetimeinitializer",
+      "name": "Google One Time Initializer",
+      "description": "Runs setup tasks once on first boot, including registering the device with Google services. Safe to remove after initial setup is complete.",
+      "brand": "google",
+      "threat_level": 1,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["setup", "bloatware"]
+    },
+    {
+      "package": "com.google.android.partnersetup",
+      "name": "Google Partner Setup",
+      "description": "Initializes carrier and OEM partner integrations with Google services on first boot. Safe to disable after initial setup.",
+      "brand": "google",
+      "threat_level": 1,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["setup", "bloatware"]
+    },
+    {
+      "package": "com.google.android.configupdater",
+      "name": "Google Config Updater",
+      "description": "Silently pushes configuration updates to Google system components. Cannot be inspected — updates happen without user awareness or consent.",
+      "brand": "google",
+      "threat_level": 3,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["remote-config", "tracking"]
+    },
+    {
+      "package": "com.google.android.apps.turbo",
+      "name": "Google Device Health Services",
+      "description": "Runs battery and storage health analysis. Sends device health metrics to Google. Distinct from Android's built-in battery management.",
+      "brand": "google",
+      "threat_level": 2,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["telemetry", "analytics"]
+    },
+    {
+      "package": "com.google.android.apps.wellbeing",
+      "name": "Google Digital Wellbeing",
+      "description": "Tracks detailed app usage, screen time, and notification patterns. Disable if you don't actively use screen time limits.",
+      "brand": "google",
+      "threat_level": 2,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["tracking", "usage-monitoring"]
+    },
+    {
+      "package": "com.google.android.apps.tachyon",
+      "name": "Google Meet",
+      "description": "Google's video calling app. Registers for push notifications continuously. Safe to disable if using another video calling solution.",
+      "brand": "google",
+      "threat_level": 1,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "communication"]
+    },
+    {
+      "package": "com.google.android.apps.subscriptions.red",
+      "name": "Google One",
+      "description": "Google's storage subscription service. Runs background sync and upsell checks. Safe to disable if not using Google One.",
+      "brand": "google",
+      "threat_level": 1,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "cloud"]
+    },
+    {
+      "package": "com.google.android.apps.magazines",
+      "name": "Google News",
+      "description": "Google's news aggregator. Tracks reading habits and article engagement to build an interest profile used for ad targeting.",
+      "brand": "google",
+      "threat_level": 2,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "tracking", "ads"]
+    },
+    {
+      "package": "com.google.android.videos",
+      "name": "Google Play Movies",
+      "description": "Google's video rental and purchase app. Runs background content sync. Safe to disable if not using Google Play Movies.",
+      "brand": "google",
+      "threat_level": 1,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware"]
+    },
+    {
+      "package": "com.google.android.googlequicksearchbox",
+      "name": "Google Search and Assistant",
+      "description": "Google's search and assistant app. Monitors your queries, voice searches, and assistant interactions. Sends all searches to Google. Removing this disables the Google Assistant shortcut but does not break core Android functions.",
+      "brand": "google",
+      "threat_level": 3,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["tracking", "assistant", "search"]
+    },
+    {
+      "package": "com.facebook.appmanager",
+      "name": "Facebook App Manager (Hidden)",
+      "description": "A hidden background service that manages Facebook's app ecosystem. Runs silently even without the main Facebook app installed. Maintains Facebook's presence in the system and schedules silent updates.",
+      "brand": "meta",
+      "threat_level": 5,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["tracking", "background-process", "hidden"]
+    },
+    {
+      "package": "com.facebook.services",
+      "name": "Facebook Background Services (Hidden)",
+      "description": "Core background service engine for all Meta apps. Runs independently of Facebook, Instagram, or Messenger being installed. Maintains persistent network connections to Meta servers.",
+      "brand": "meta",
+      "threat_level": 5,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["tracking", "background-process", "hidden", "network"]
+    },
+    {
+      "package": "com.facebook.system",
+      "name": "Facebook System Component (Hidden)",
+      "description": "The most buried Meta component. Registers as a system-level service to survive app uninstalls. Pre-installed on Samsung devices through a carrier and OEM agreement. Acts as a backdoor that reinstalls other Meta components.",
+      "brand": "meta",
+      "threat_level": 5,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["tracking", "background-process", "hidden", "persistent"]
+    },
+    {
+      "package": "com.facebook.katana",
+      "name": "Facebook",
+      "description": "Meta's main social network app. Uses the Zygote resurrection technique to respawn background processes even after force-stop. Holds wake locks and requests background location, camera, and microphone permissions.",
+      "brand": "meta",
+      "threat_level": 4,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["social", "tracking", "wakelock", "location", "microphone"]
+    },
+    {
+      "package": "com.facebook.orca",
+      "name": "Messenger",
+      "description": "Meta's messaging app. Requests microphone access for voice notes and calls but retains access outside of active use. Shares data with Facebook's advertising network.",
+      "brand": "meta",
+      "threat_level": 3,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["social", "tracking", "microphone"]
+    },
+    {
+      "package": "com.instagram.android",
+      "name": "Instagram",
+      "description": "Meta's photo and video social platform. Continuous background location tracking, clipboard monitoring, and camera background access. Feeds data to Meta's advertising algorithm.",
+      "brand": "meta",
+      "threat_level": 4,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["social", "tracking", "location", "camera", "clipboard"]
+    },
+    {
+      "package": "com.facebook.stella",
+      "name": "Threads (Meta)",
+      "description": "Meta's Twitter competitor. Imports Instagram follower graph and shares activity data with Meta's central advertising profile. Was running with 164MB RAM and an active wake lock on the audit device.",
+      "brand": "meta",
+      "threat_level": 3,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["social", "tracking", "wakelock"]
+    },
+    {
+      "package": "com.facebook.lite",
+      "name": "Facebook Lite",
+      "description": "Lightweight version of Facebook for low-bandwidth regions. Pre-installed on some carrier variants. Same tracking profile as the main app despite the Lite branding.",
+      "brand": "meta",
+      "threat_level": 4,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["social", "tracking", "bloatware"]
+    },
+    {
+      "package": "com.miui.analytics",
+      "name": "MIUI Analytics",
+      "description": "Xiaomi's primary behavioral analytics service. Documented to collect clipboard content, installed apps, WiFi SSID history, and browsing patterns. Sends data to Chinese servers.",
+      "brand": "xiaomi",
+      "threat_level": 5,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["telemetry", "analytics", "clipboard", "data-upload"]
+    },
+    {
+      "package": "com.miui.daemon",
+      "name": "MIUI Core Daemon",
+      "description": "Background daemon that powers MIUI Analytics. Acts as the data pipeline between device monitoring and Xiaomi's servers. Removing MIUI Analytics without this has limited effect.",
+      "brand": "xiaomi",
+      "threat_level": 5,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["telemetry", "analytics", "background-process"]
+    },
+    {
+      "package": "com.xiaomi.finddevice",
+      "name": "Xiaomi Find Device",
+      "description": "Continuously reports device location to Xiaomi servers for the Find My Device feature. Active even when the screen is off.",
+      "brand": "xiaomi",
+      "threat_level": 4,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["location", "tracking"]
+    },
+    {
+      "package": "com.xiaomi.mipicks",
+      "name": "Mi Picks (Xiaomi Ads)",
+      "description": "Serves targeted ads inside MIUI system apps based on your behavior profile. The ad targeting data is shared with third-party advertisers.",
+      "brand": "xiaomi",
+      "threat_level": 3,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["ads", "tracking"]
+    },
+    {
+      "package": "com.miui.msa.global",
+      "name": "MIUI System Ads",
+      "description": "Injects ads into system apps including File Manager, Weather, and Security. Requires device behavior data to target ads and sending this data is not optional.",
+      "brand": "xiaomi",
+      "threat_level": 4,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["ads", "tracking"]
+    },
+    {
+      "package": "com.xiaomi.market",
+      "name": "Xiaomi App Market",
+      "description": "Xiaomi's app store. Reports installed apps to Xiaomi and recommends paid alternatives. Background update checks run every few hours.",
+      "brand": "xiaomi",
+      "threat_level": 2,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "store"]
+    },
+    {
+      "package": "com.miui.cloudbackup",
+      "name": "MIUI Cloud Backup",
+      "description": "Backs up contacts, messages, settings, and photos to Xiaomi's cloud servers. Data is stored under Chinese data sovereignty laws.",
+      "brand": "xiaomi",
+      "threat_level": 3,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["cloud", "backup", "data-upload"]
+    },
+    {
+      "package": "com.miui.global.maintenancetool",
+      "name": "MIUI Global Maintenance Tool",
+      "description": "Remote maintenance access tool. Allows Xiaomi to push system changes and collect diagnostic data remotely without per-change consent.",
+      "brand": "xiaomi",
+      "threat_level": 4,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["telemetry", "remote-access"]
+    },
+    {
+      "package": "com.oneplus.bugreporter",
+      "name": "OnePlus Bug Reporter",
+      "description": "Automatically captures logs, stack traces, and system snapshots when apps crash. Uploads the data to OnePlus servers without per-crash user consent.",
+      "brand": "oneplus",
+      "threat_level": 3,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["telemetry", "logging"]
+    },
+    {
+      "package": "com.oneplus.logkit",
+      "name": "OnePlus Log Kit",
+      "description": "Continuous system log capture service used for OnePlus diagnostics. Logs contain sensitive information including app activity, network requests, and location events.",
+      "brand": "oneplus",
+      "threat_level": 4,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["telemetry", "logging"]
+    },
+    {
+      "package": "com.coloros.logkit",
+      "name": "ColorOS Log Kit",
+      "description": "OPPO and ColorOS equivalent of OnePlus Log Kit. Captures and uploads system logs to OPPO servers.",
+      "brand": "oneplus",
+      "threat_level": 4,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["telemetry", "logging"]
+    },
+    {
+      "package": "com.oppo.market",
+      "name": "OPPO Market",
+      "description": "OPPO's app store. Reports installed apps and usage to OPPO. Background update checks run frequently.",
+      "brand": "oneplus",
+      "threat_level": 2,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "store"]
+    },
+    {
+      "package": "com.heytap.market",
+      "name": "HeyTap Market",
+      "description": "Realme and OPPO's HeyTap platform app store. Tracks app usage and shares data with BBK Electronics, the parent company of OPPO and Realme.",
+      "brand": "oneplus",
+      "threat_level": 3,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "store", "tracking"]
+    },
+    {
+      "package": "net.oneplus.widget",
+      "name": "OnePlus Widget",
+      "description": "Home screen widget service for OnePlus. Runs background data refresh for widget content.",
+      "brand": "oneplus",
+      "threat_level": 1,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware"]
+    },
+    {
+      "package": "com.realme.market",
+      "name": "Realme Market",
+      "description": "Realme's app marketplace. Collects device info and installed app list. Runs background sync.",
+      "brand": "oneplus",
+      "threat_level": 2,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "store"]
+    },
+    {
+      "package": "com.microsoft.launcher.enterprise",
+      "name": "Microsoft Launcher",
+      "description": "Microsoft's Android launcher. Pre-installed on some Samsung devices. Syncs your home screen layout and usage patterns to Microsoft accounts.",
+      "brand": "microsoft",
+      "threat_level": 2,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "launcher"]
+    },
+    {
+      "package": "com.microsoft.skydrive",
+      "name": "Microsoft OneDrive",
+      "description": "Automatically backs up photos and files to Microsoft's cloud. Background upload runs on WiFi. Disable if not using OneDrive.",
+      "brand": "microsoft",
+      "threat_level": 2,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["cloud", "backup", "bloatware"]
+    },
+    {
+      "package": "com.microsoft.office.officehubrow",
+      "name": "Microsoft Office Hub",
+      "description": "Pre-installed Microsoft Office launcher stub. Prompts to subscribe to Microsoft 365. Runs background sync for Office documents.",
+      "brand": "microsoft",
+      "threat_level": 1,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware"]
+    },
+    {
+      "package": "com.amazon.appmanager",
+      "name": "Amazon App Manager",
+      "description": "Pre-installed on some devices to promote Amazon's app ecosystem. Runs background availability checks and sends device identifiers to Amazon.",
+      "brand": "amazon",
+      "threat_level": 2,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "tracking"]
+    },
+    {
+      "package": "com.netflix.partner.activation",
+      "name": "Netflix Pre-install Activation",
+      "description": "Not the Netflix app. This is a background service that activates the pre-installed Netflix stub and checks for eligible free subscription offers. Runs at boot on Samsung devices.",
+      "brand": "samsung",
+      "threat_level": 1,
+      "safe_to_disable": true,
+      "affects_core_function": false,
+      "categories": ["bloatware", "carrier"]
+    }
+  ]
+}

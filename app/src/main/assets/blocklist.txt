@@ -1,0 +1,319 @@
+# HandsOff Tracker Blocklist v1.0
+# Updated: 2026-03-27
+# Format: one domain per line — subdomains are auto-matched by the parent lookup
+# e.g. blocking "appsflyer.com" also blocks "launches.appsflyer.com"
+#
+# Deliberately NOT included (would break legitimate app functionality):
+#   graph.facebook.com    — breaks Facebook login in third-party apps
+#   firebase.google.com   — breaks FCM push notifications for ALL apps
+#   mtalk.google.com      — Firebase Cloud Messaging, breaks push for all apps
+#   t.co                  — Twitter URL shortener, breaks all Twitter links in apps
+#   ipv4.google.com       — Android connectivity check, breaks WiFi detection
+
+# ── Google Advertising & Analytics ───────────────────────────────────────────
+google-analytics.com
+ssl.google-analytics.com
+analytics.google.com
+app-measurement.com
+googletagmanager.com
+googletagservices.com
+googlesyndication.com
+pagead2.googlesyndication.com
+tpc.googlesyndication.com
+ade.googlesyndication.com
+doubleclick.net
+ad.doubleclick.net
+stats.g.doubleclick.net
+cm.g.doubleclick.net
+googleadservices.com
+partner.googleadservices.com
+csi.gstatic.com
+firebaselogging-pa.googleapis.com
+
+# ── Facebook / Meta Advertising ───────────────────────────────────────────────
+connect.facebook.net
+an.facebook.com
+pixel.facebook.com
+
+# ── Adobe Marketing Cloud ─────────────────────────────────────────────────────
+omtrdc.net
+2o7.net
+demdex.net
+adobedtm.com
+everesttech.net
+adobedc.net
+
+# ── comScore ─────────────────────────────────────────────────────────────────
+scorecardresearch.com
+beacon.scorecardresearch.com
+
+# ── Nielsen ──────────────────────────────────────────────────────────────────
+imrworldwide.com
+secure-gl.imrworldwide.com
+saa.imrworldwide.com
+exelate.com
+
+# ── Amazon Advertising ────────────────────────────────────────────────────────
+amazon-adsystem.com
+aax.amazon-adsystem.com
+fls-na.amazon.com
+fls-eu.amazon.com
+
+# ── AppNexus / Xandr (Microsoft) ──────────────────────────────────────────────
+adnxs.com
+ib.adnxs.com
+cdn.adnxs.com
+secure.adnxs.com
+acdn.adnxs.com
+
+# ── The Trade Desk ────────────────────────────────────────────────────────────
+adsrvr.org
+match.adsrvr.org
+
+# ── Criteo ────────────────────────────────────────────────────────────────────
+criteo.com
+static.criteo.net
+rtax.criteo.com
+sslwidget.criteo.com
+
+# ── Taboola ───────────────────────────────────────────────────────────────────
+taboola.com
+trc.taboola.com
+cdn.taboola.com
+
+# ── Outbrain ──────────────────────────────────────────────────────────────────
+outbrain.com
+odb.outbrain.com
+amplify.outbrain.com
+
+# ── Rubicon Project / Magnite ─────────────────────────────────────────────────
+rubiconproject.com
+eus.rubiconproject.com
+fastlane.rubiconproject.com
+
+# ── OpenX ─────────────────────────────────────────────────────────────────────
+openx.net
+servedby.openx.net
+
+# ── PubMatic ──────────────────────────────────────────────────────────────────
+pubmatic.com
+ads.pubmatic.com
+image6.pubmatic.com
+
+# ── Index Exchange ────────────────────────────────────────────────────────────
+casalemedia.com
+ssum.casalemedia.com
+
+# ── LiveRamp ──────────────────────────────────────────────────────────────────
+rlcdn.com
+
+# ── Oracle / BlueKai / AddThis ────────────────────────────────────────────────
+bluekai.com
+nexac.com
+addthis.com
+m.addthis.com
+
+# ── Twitter / X Ads (analytics only — not the main platform) ──────────────────
+ads.twitter.com
+analytics.twitter.com
+static.ads-twitter.com
+
+# ── LinkedIn Ads ──────────────────────────────────────────────────────────────
+ads.linkedin.com
+px.ads.linkedin.com
+snap.licdn.com
+
+# ── TikTok Analytics ─────────────────────────────────────────────────────────
+ads.tiktok.com
+log.tiktok.com
+log2.tiktok.com
+mon.tiktok.com
+analytics.tiktok.com
+
+# ── Chartbeat ─────────────────────────────────────────────────────────────────
+chartbeat.com
+static.chartbeat.com
+
+# ── Quantcast ─────────────────────────────────────────────────────────────────
+quantserve.com
+quantcount.com
+
+# ── Hotjar ────────────────────────────────────────────────────────────────────
+hotjar.com
+cdn.hotjar.com
+static.hotjar.com
+
+# ── Heap Analytics ────────────────────────────────────────────────────────────
+heapanalytics.com
+cdn.heapanalytics.com
+
+# ── Mixpanel ──────────────────────────────────────────────────────────────────
+mixpanel.com
+api.mixpanel.com
+cdn.mxpnl.com
+
+# ── Segment ───────────────────────────────────────────────────────────────────
+segment.com
+api.segment.com
+api.segment.io
+cdn.segment.com
+cdn.segment.io
+
+# ── Amplitude ─────────────────────────────────────────────────────────────────
+amplitude.com
+cdn.amplitude.com
+api2.amplitude.com
+api.amplitude.com
+
+# ── Braze ─────────────────────────────────────────────────────────────────────
+braze.com
+iad.appboy.com
+hs.braze.com
+sdk.iad-01.braze.com
+sdk.iad-02.braze.com
+sdk.iad-03.braze.com
+sdk.iad-04.braze.com
+sdk.iad-05.braze.com
+sdk.iad-06.braze.com
+
+# ── Leanplum ──────────────────────────────────────────────────────────────────
+leanplum.com
+dev.leanplum.com
+rp.leanplum.com
+
+# ── Localytics ────────────────────────────────────────────────────────────────
+localytics.com
+api.localytics.com
+
+# ── AppsFlyer (Mobile Attribution) ───────────────────────────────────────────
+appsflyer.com
+launches.appsflyer.com
+t.appsflyer.com
+impression.appsflyer.com
+
+# ── Adjust (Mobile Attribution) ──────────────────────────────────────────────
+adjust.com
+app.adjust.com
+s2s.adjust.com
+view.adjust.com
+
+# ── Kochava ───────────────────────────────────────────────────────────────────
+kochava.com
+control.kochava.com
+track.kochava.com
+
+# ── Singular ──────────────────────────────────────────────────────────────────
+singular.net
+sdk-api.singular.net
+
+# ── Branch.io ─────────────────────────────────────────────────────────────────
+branch.io
+api2.branch.io
+cdn.branch.io
+
+# ── Flurry / Yahoo Analytics ──────────────────────────────────────────────────
+flurry.com
+data.flurry.com
+api.flurry.com
+
+# ── Moat (Oracle) ─────────────────────────────────────────────────────────────
+moatads.com
+z.moatads.com
+
+# ── Yandex Ads ────────────────────────────────────────────────────────────────
+an.yandex.ru
+an.yandex.com
+mc.yandex.ru
+metrika.yandex.com
+
+# ── CleverTap ─────────────────────────────────────────────────────────────────
+clevertap.com
+wzrkt.com
+
+# ── Urban Airship / Airship ───────────────────────────────────────────────────
+urbanairship.com
+device-api.urbanairship.com
+
+# ── AppLovin ──────────────────────────────────────────────────────────────────
+applovin.com
+ads.applovin.com
+rt.applovin.com
+d.applovin.com
+
+# ── Vungle / Liftoff ─────────────────────────────────────────────────────────
+vungle.com
+ads.vungle.com
+api.vungle.com
+
+# ── IronSource / Unity Ads ────────────────────────────────────────────────────
+ironsrc.com
+outcome.ironsrc.com
+api.ironsrc.com
+
+# ── Chartboost ────────────────────────────────────────────────────────────────
+chartboost.com
+live.chartboost.com
+
+# ── AdColony / Digital Turbine ────────────────────────────────────────────────
+adcolony.com
+adc3-launch.adcolony.com
+ads30.adcolony.com
+
+# ── InMobi ────────────────────────────────────────────────────────────────────
+inmobi.com
+api.inmobi.com
+sdk.inmobi.com
+
+# ── Smaato ────────────────────────────────────────────────────────────────────
+smaato.com
+
+# ── BidSwitch ────────────────────────────────────────────────────────────────
+bidswitch.net
+
+# ── Sovrn ─────────────────────────────────────────────────────────────────────
+lijit.com
+sovrn.com
+
+# ── MediaMath ─────────────────────────────────────────────────────────────────
+mediamath.com
+t.mathtag.com
+
+# ── New Relic ─────────────────────────────────────────────────────────────────
+newrelic.com
+bam.nr-data.net
+mobile.newrelic.com
+
+# ── Advertising.com / AOL / Verizon Media ─────────────────────────────────────
+advertising.com
+pixel.advertising.com
+atdmt.com
+
+# ── ShareThis ────────────────────────────────────────────────────────────────
+sharethis.com
+s.sharethis.com
+
+# ── Xiaomi / MIUI Analytics ───────────────────────────────────────────────────
+data.mistat.xiaomi.com
+data.mistat.global.xiaomi.com
+api.ad.xiaomi.com
+sdkconfig.ad.xiaomi.com
+adm.global.xiaomi.com
+tracking.miui.com
+
+# ── Alibaba / Umeng ───────────────────────────────────────────────────────────
+umeng.com
+umsns.com
+alog.umeng.com
+oc.umeng.com
+
+# ── Tencent ──────────────────────────────────────────────────────────────────
+bugly.qq.com
+stat.game.qq.com
+
+# ── Agkn / Neustar ────────────────────────────────────────────────────────────
+d.agkn.com
+agkn.com
+
+# ── Snap Advertising ─────────────────────────────────────────────────────────
+tr.snapchat.com
+sc-static.net

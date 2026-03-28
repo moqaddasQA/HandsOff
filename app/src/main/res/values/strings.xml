@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HandsOff</string>
+    <string name="shizuku_permission_reason">HandsOff needs Shizuku access to remove bloatware and apply privacy settings without root access.</string>
+</resources>

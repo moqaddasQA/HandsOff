@@ -1,0 +1,51 @@
+# Built artifacts
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Build output
+build/
+app/build/
+
+# Gradle
+.gradle/
+gradle-app.setting
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+.gradletasknamecache
+
+# Android Studio / IntelliJ
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+captures/
+.externalNativeBuild/
+.cxx/
+*.DS_Store
+
+# Local config (contains SDK path — machine-specific, never commit)
+local.properties
+
+# Signing keys (NEVER commit these)
+*.jks
+*.keystore
+keystore.properties
+release-keystore.jks
+
+# Fastlane secrets
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+fastlane/*.key
+fastlane/play-store-*.json
+
+# Crash logs from JVM tests
+hs_err_pid*.log
+replay_pid*.log
+
+# Test results (generated, not source)
+app/src/test/**/__snapshots__/
