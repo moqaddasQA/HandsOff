@@ -42,6 +42,8 @@ fastlane/screenshots/
 fastlane/test_output/
 fastlane/*.key
 fastlane/play-store-*.json
+fastlane/.env.secret
+.env.secret
 
 # Crash logs from JVM tests
 hs_err_pid*.log
