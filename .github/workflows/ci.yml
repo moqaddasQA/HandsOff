@@ -21,9 +21,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v3
-
       - name: Make gradlew executable
         run: chmod +x gradlew
 
