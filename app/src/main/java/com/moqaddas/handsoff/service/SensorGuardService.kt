@@ -11,6 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ServiceCompat
 import com.moqaddas.handsoff.data.db.AppDatabase
 import com.moqaddas.handsoff.data.db.ThreatEventEntity
+import com.moqaddas.handsoff.data.shizuku.ShizukuCommandRunner
 import com.moqaddas.handsoff.domain.model.ThreatType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -35,6 +36,7 @@ class SensorGuardService : Service() {
     }
 
     @Inject lateinit var db: AppDatabase
+    @Inject lateinit var shizuku: ShizukuCommandRunner
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
@@ -113,6 +115,13 @@ class SensorGuardService : Service() {
                 (packageName.hashCode() and 0x0FFF) + 100,
                 GuardianNotification.buildSensorAlert(this@SensorGuardService, appName, sensorLabel)
             )
+        }
+
+        // Block mode: if Shizuku is available and the user enabled blocking,
+        // deny the AppOp immediately so the app gets no sensor data.
+        if (SensorGuardState.blockingEnabled.value && shizuku.isAvailable()) {
+            if (type == ThreatType.MIC_ACCESS)    shizuku.denyMicAccess(packageName)
+            if (type == ThreatType.CAMERA_ACCESS) shizuku.denyCameraAccess(packageName)
         }
     }
 

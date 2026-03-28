@@ -1,0 +1,6 @@
+package_name("com.moqaddas.handsoff")
+
+# Path to your Google Play JSON key (service account credentials).
+# Generate at: Play Console → Setup → API access → Service accounts → Create key (JSON)
+# NEVER commit this file — it's excluded by .gitignore
+# json_key_file("fastlane/play-store-key.json")

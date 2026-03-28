@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Block
 import androidx.compose.material.icons.rounded.Mic
 import androidx.compose.material.icons.rounded.PhotoCamera
 import androidx.compose.material.icons.rounded.Security
@@ -54,10 +55,15 @@ fun DashboardScreen(viewModel: DashboardViewModel = hiltViewModel()) {
     val vpnState      by viewModel.vpnState.collectAsStateWithLifecycle()
     val blockedCount  by viewModel.blockedCount.collectAsStateWithLifecycle()
     val recentEvents  by viewModel.recentEvents.collectAsStateWithLifecycle(emptyList())
-    val sensorGranted by viewModel.sensorPermissionGranted.collectAsStateWithLifecycle()
+    val sensorGranted    by viewModel.sensorPermissionGranted.collectAsStateWithLifecycle()
+    val blockingEnabled  by viewModel.blockingEnabled.collectAsStateWithLifecycle()
+    val shizukuAvailable by viewModel.shizukuAvailable.collectAsStateWithLifecycle()
 
-    // Start sensor guard automatically
-    LaunchedEffect(Unit) { viewModel.startSensorGuard(context) }
+    // Start sensor guard + refresh Shizuku state on first composition
+    LaunchedEffect(Unit) {
+        viewModel.startSensorGuard(context)
+        viewModel.refreshShizukuState()
+    }
 
     val permLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -161,6 +167,16 @@ fun DashboardScreen(viewModel: DashboardViewModel = hiltViewModel()) {
             item { SensorSetupCard() }
         }
 
+        // ── Block Mode toggle (only when Shizuku is bound) ──────────────────
+        if (shizukuAvailable) {
+            item {
+                BlockModeCard(
+                    enabled = blockingEnabled,
+                    onToggle = { viewModel.setBlockingEnabled(!blockingEnabled) }
+                )
+            }
+        }
+
         // ── Event timeline ──────────────────────────────────────────────────
         if (recentEvents.isNotEmpty()) {
             item {
@@ -211,6 +227,56 @@ private fun SensorSetupCard() {
                 Text("Sensor Monitoring Needs Setup", color = TextPrimary, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
                 Text("Grant GET_APP_OPS_STATS via ADB to enable mic/camera detection", color = TextSecond, fontSize = 12.sp)
             }
+        }
+    }
+}
+
+@Composable
+private fun BlockModeCard(enabled: Boolean, onToggle: () -> Unit) {
+    val blockColor = if (enabled) ErrorColor else TextSecond
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = Color(0xFF1C2128),
+        border = androidx.compose.foundation.BorderStroke(1.dp, blockColor.copy(alpha = 0.4f))
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.weight(1f)
+            ) {
+                Icon(Icons.Rounded.Block, null, tint = blockColor, modifier = Modifier.size(22.dp))
+                Column {
+                    Text(
+                        "Block Mode",
+                        color = TextPrimary,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Text(
+                        if (enabled) "Mic & camera access denied instantly"
+                        else "Detect only — tap to also block",
+                        color = TextSecond,
+                        fontSize = 12.sp
+                    )
+                }
+            }
+            Switch(
+                checked = enabled,
+                onCheckedChange = { onToggle() },
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = Color.White,
+                    checkedTrackColor = ErrorColor,
+                    uncheckedThumbColor = TextSecond,
+                    uncheckedTrackColor = Color(0xFF30363D)
+                )
+            )
         }
     }
 }

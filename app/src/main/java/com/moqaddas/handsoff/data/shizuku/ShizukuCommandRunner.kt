@@ -96,6 +96,15 @@ class ShizukuCommandRunner @Inject constructor() {
     suspend fun denyAppOp(packageName: String, op: String) =
         execute("cmd", "appops", "set", packageName, op, "deny")
 
+    suspend fun allowAppOp(packageName: String, op: String) =
+        execute("cmd", "appops", "set", packageName, op, "allow")
+
+    // Mic / camera blocking convenience wrappers
+    suspend fun denyMicAccess(packageName: String)     = denyAppOp(packageName, "RECORD_AUDIO")
+    suspend fun denyCameraAccess(packageName: String)  = denyAppOp(packageName, "CAMERA")
+    suspend fun restoreMicAccess(packageName: String)  = allowAppOp(packageName, "RECORD_AUDIO")
+    suspend fun restoreCameraAccess(packageName: String) = allowAppOp(packageName, "CAMERA")
+
     suspend fun forceStop(packageName: String) =
         execute("am", "force-stop", packageName)
 

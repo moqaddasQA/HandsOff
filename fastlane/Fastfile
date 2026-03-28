@@ -1,0 +1,51 @@
+default_platform(:android)
+
+platform :android do
+
+  # ── Beta (Google Play Internal Testing track) ──────────────────────────────
+  # Usage: fastlane beta
+  # Requires: fastlane/play-store-key.json (see Appfile)
+  #
+  # 1. Install fastlane: gem install fastlane
+  # 2. Generate Play Store JSON key:
+  #    Play Console → Setup → API access → Service accounts → Create key (JSON)
+  #    Save as fastlane/play-store-key.json (never commit this file)
+  # 3. Set HANDSOFF_KEYSTORE_PATH, HANDSOFF_KEYSTORE_PASSWORD,
+  #    HANDSOFF_KEY_ALIAS, HANDSOFF_KEY_PASSWORD as env vars or in .env.secret
+  # 4. Run: fastlane beta
+  #
+  lane :beta do
+    # Build signed release AAB
+    gradle(
+      task:            "bundle",
+      build_type:      "Release",
+      properties: {
+        "android.injected.signing.store.file"     => ENV["HANDSOFF_KEYSTORE_PATH"],
+        "android.injected.signing.store.password" => ENV["HANDSOFF_KEYSTORE_PASSWORD"],
+        "android.injected.signing.key.alias"      => ENV["HANDSOFF_KEY_ALIAS"],
+        "android.injected.signing.key.password"   => ENV["HANDSOFF_KEY_PASSWORD"],
+      }
+    )
+
+    # Upload to Google Play internal testing track
+    upload_to_play_store(
+      track:                  "internal",
+      aab:                    lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH],
+      release_status:         "draft",
+      skip_upload_apk:        true,
+      skip_upload_metadata:   true,
+      skip_upload_images:     true,
+      skip_upload_screenshots: true
+    )
+
+    UI.success("Beta uploaded to Google Play internal track!")
+  end
+
+  # ── Debug build (local verification) ──────────────────────────────────────
+  # Usage: fastlane build_debug
+  lane :build_debug do
+    gradle(task: "assemble", build_type: "Debug")
+    UI.success("Debug APK built at #{lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]}")
+  end
+
+end
