@@ -17,6 +17,9 @@
     <!-- Required for WorkManager foreground service (Android 9+) -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <!-- Required for mic/camera monitoring foreground service (Android 14+) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
     <!-- Required to post guardian alerts and threat notifications -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!-- Required for sensor monitoring (mic/camera detection) — grant via ADB/Shizuku -->
@@ -72,11 +75,13 @@
         </service>
 
         <!-- SensorGuardService — mic/camera access monitoring.
+             foregroundServiceType microphone|camera is required on Android 12+ for
+             the OS to route AppOps active-watcher callbacks correctly.
              exported=false: only started by this app's BootReceiver and UI. -->
         <service
             android:name=".service.SensorGuardService"
             android:exported="false"
-            android:foregroundServiceType="dataSync" />
+            android:foregroundServiceType="microphone|camera" />
 
         <!-- WorkManager foreground service for background scans -->
         <service

@@ -1,12 +1,18 @@
 package com.moqaddas.handsoff.service
 
+import android.app.ActivityManager
 import android.app.AppOpsManager
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
+import android.hardware.camera2.CameraManager
+import android.media.AudioManager
+import android.media.AudioRecordingConfiguration
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import androidx.annotation.RequiresApi
 import androidx.core.app.ServiceCompat
 import com.moqaddas.handsoff.data.db.AppDatabase
@@ -20,12 +26,17 @@ import javax.inject.Inject
 /**
  * Monitors microphone and camera access across all installed apps.
  *
- * Uses AppOpsManager.startWatchingActive (public API, added in API 28).
- * Requires android.permission.GET_APP_OPS_STATS for cross-app monitoring.
- * Grant once via ADB or Shizuku:
- *   adb shell pm grant <packageId> android.permission.GET_APP_OPS_STATS
+ * Primary:  AppOpsManager.startWatchingActive (API 28) — works on stock Android.
+ * Fallback: CameraManager.AvailabilityCallback + AudioManager.AudioRecordingCallback —
+ *           hardware-level callbacks that bypass AppOps delivery restrictions on
+ *           Samsung One UI 4.1 and similar OEM builds.
  *
- * If permission is absent, SensorGuardState signals the dashboard to show a setup card.
+ * Both paths share a dedup window so a single real access produces one event even if
+ * both the AppOps watcher and the hardware callback fire simultaneously.
+ *
+ * Requires android.permission.GET_APP_OPS_STATS for AppOps cross-app monitoring.
+ * Grant via ADB or Shizuku:
+ *   adb shell pm grant <packageId> android.permission.GET_APP_OPS_STATS
  */
 @AndroidEntryPoint
 class SensorGuardService : Service() {
@@ -33,39 +44,69 @@ class SensorGuardService : Service() {
     companion object {
         const val ACTION_START = "com.moqaddas.handsoff.ACTION_START_SENSOR_GUARD"
         const val ACTION_STOP  = "com.moqaddas.handsoff.ACTION_STOP_SENSOR_GUARD"
+        private const val DEDUP_MS = 3_000L
     }
 
     @Inject lateinit var db: AppDatabase
     @Inject lateinit var shizuku: ShizukuCommandRunner
 
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val scope      = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val mainHandler = Handler(Looper.getMainLooper())
 
-    // Listener reference kept so we can unregister in onDestroy
-    private var opListener: AppOpsManager.OnOpActiveChangedListener? = null
+    // ── Primary AppOps watcher ───────────────────────────────────────────────
+    private var opActiveListener: AppOpsManager.OnOpActiveChangedListener? = null
+
+    // ── Hardware fallback handles ────────────────────────────────────────────
+    private var cameraCallback: CameraManager.AvailabilityCallback? = null
+    private var audioCallback:  AudioManager.AudioRecordingCallback? = null
+
+    // Dedup: "packageName:opStr" → last-fired epoch ms.
+    // Prevents a single real access from producing multiple DB rows when both
+    // the AppOps path and the hardware path fire for the same event.
+    // Accessed only from main-thread callbacks — no synchronization needed.
+    private val lastEventMs    = mutableMapOf<String, Long>()
+    private val activeCameraIds = mutableSetOf<String>()   // main-thread only
+
+    // ── Service lifecycle ────────────────────────────────────────────────────
 
     override fun onBind(intent: Intent?) = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         return when (intent?.action) {
             ACTION_STOP -> { stopSelf(); START_NOT_STICKY }
-            else -> { startGuard(); START_STICKY }
+            else        -> { startGuard(); START_STICKY }
         }
     }
 
     private fun startGuard() {
         GuardianNotification.createChannel(this)
-        ServiceCompat.startForeground(
-            this,
-            GuardianNotification.NOTIF_ID + 10,
-            GuardianNotification.build(this, 0),
+
+        // Android 11+ requires mic|camera foreground type for AppOps callbacks to route correctly
+        val fgType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE or
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_CAMERA
+        } else {
             ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+        }
+        ServiceCompat.startForeground(
+            this, GuardianNotification.NOTIF_ID + 10,
+            GuardianNotification.build(this, 0), fgType
         )
+
+        // Primary path — AppOps watcher (requires GET_APP_OPS_STATS)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             registerOpWatcher()
         } else {
             SensorGuardState.setPermissionGranted(false)
         }
+
+        // Fallback path — hardware-level callbacks
+        // These fire regardless of OEM AppOps delivery restrictions
+        registerCameraFallback()
+        registerMicFallback()
     }
+
+    // ── AppOps primary ───────────────────────────────────────────────────────
 
     @RequiresApi(Build.VERSION_CODES.P)
     private fun registerOpWatcher() {
@@ -74,21 +115,81 @@ class SensorGuardService : Service() {
 
         val listener = AppOpsManager.OnOpActiveChangedListener { op, _, packageName, active ->
             if (!active) return@OnOpActiveChangedListener
-            scope.launch { onSensorActive(packageName, op) }
+            maybeFire(packageName, op)
         }
-
         try {
             appOps.startWatchingActive(ops, mainExecutor, listener)
-            opListener = listener
+            opActiveListener = listener
             SensorGuardState.setPermissionGranted(true)
         } catch (e: SecurityException) {
-            // GET_APP_OPS_STATS not granted — show setup card in dashboard
             SensorGuardState.setPermissionGranted(false)
         }
     }
 
+    // ── Camera hardware fallback ─────────────────────────────────────────────
+
+    private fun registerCameraFallback() {
+        val cm = getSystemService(CameraManager::class.java)
+        val cb = object : CameraManager.AvailabilityCallback() {
+            override fun onCameraUnavailable(cameraId: String) {
+                // Camera just opened by some app
+                if (activeCameraIds.add(cameraId)) {
+                    maybeFire(findForegroundPackage(), AppOpsManager.OPSTR_CAMERA)
+                }
+            }
+            override fun onCameraAvailable(cameraId: String) {
+                activeCameraIds.remove(cameraId)
+            }
+        }
+        cm.registerAvailabilityCallback(cb, mainHandler)
+        cameraCallback = cb
+    }
+
+    // ── Microphone hardware fallback ─────────────────────────────────────────
+
+    private fun registerMicFallback() {
+        val am = getSystemService(AudioManager::class.java)
+        val cb = object : AudioManager.AudioRecordingCallback() {
+            override fun onRecordingConfigChanged(configs: MutableList<AudioRecordingConfiguration>) {
+                if (configs.isEmpty()) return
+                maybeFire(findForegroundPackage(), AppOpsManager.OPSTR_RECORD_AUDIO)
+            }
+        }
+        am.registerAudioRecordingCallback(cb, mainHandler)
+        audioCallback = cb
+    }
+
+    // ── Shared helpers ───────────────────────────────────────────────────────
+
+    /**
+     * Fires a sensor event only if the same package+op hasn't fired within DEDUP_MS.
+     * Called from main-thread callbacks only.
+     */
+    private fun maybeFire(packageName: String, opStr: String) {
+        val key = "$packageName:$opStr"
+        val now = System.currentTimeMillis()
+        if (now - (lastEventMs[key] ?: 0L) < DEDUP_MS) return
+        lastEventMs[key] = now
+        scope.launch { onSensorActive(packageName, opStr) }
+    }
+
+    /**
+     * Returns the most-foreground non-system package currently running.
+     * Used as a best-effort package identification when the camera hardware
+     * callback fires but carries no package identity.
+     */
+    private fun findForegroundPackage(): String {
+        val am = getSystemService(ActivityManager::class.java)
+        return am.runningAppProcesses
+            ?.filter { it.importance <= ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND_SERVICE }
+            ?.filterNot { proc -> proc.pkgList.any { it == packageName || it.startsWith("android") } }
+            ?.minByOrNull { it.importance }
+            ?.pkgList?.firstOrNull()
+            ?: "unknown"
+    }
+
     private suspend fun onSensorActive(packageName: String, opStr: String) {
-        val pm = packageManager
+        val pm      = packageManager
         val appName = runCatching {
             pm.getApplicationLabel(pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA)).toString()
         }.getOrDefault(packageName)
@@ -117,18 +218,20 @@ class SensorGuardService : Service() {
             )
         }
 
-        // Block mode: if Shizuku is available and the user enabled blocking,
-        // deny the AppOp immediately so the app gets no sensor data.
         if (SensorGuardState.blockingEnabled.value && shizuku.isAvailable()) {
             if (type == ThreatType.MIC_ACCESS)    shizuku.denyMicAccess(packageName)
             if (type == ThreatType.CAMERA_ACCESS) shizuku.denyCameraAccess(packageName)
         }
     }
 
+    // ── Cleanup ──────────────────────────────────────────────────────────────
+
     override fun onDestroy() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            opListener?.let { getSystemService(AppOpsManager::class.java).stopWatchingActive(it) }
+            opActiveListener?.let { getSystemService(AppOpsManager::class.java).stopWatchingActive(it) }
         }
+        cameraCallback?.let { getSystemService(CameraManager::class.java).unregisterAvailabilityCallback(it) }
+        audioCallback?.let  { getSystemService(AudioManager::class.java).unregisterAudioRecordingCallback(it) }
         scope.cancel()
         SensorGuardState.clear()
         super.onDestroy()
