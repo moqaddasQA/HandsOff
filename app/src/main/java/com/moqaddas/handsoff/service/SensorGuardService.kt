@@ -2,6 +2,8 @@ package com.moqaddas.handsoff.service
 
 import android.app.ActivityManager
 import android.app.AppOpsManager
+import android.app.usage.UsageEvents
+import android.app.usage.UsageStatsManager
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
@@ -174,19 +176,38 @@ class SensorGuardService : Service() {
     }
 
     /**
-     * Returns the most-foreground non-system package currently running.
-     * Used as a best-effort package identification when the camera hardware
-     * callback fires but carries no package identity.
+     * Returns the package that most recently moved to foreground (last 5 s).
+     * Uses UsageStatsManager.queryEvents() — requires PACKAGE_USAGE_STATS.
+     * Falls back to "unknown" if the permission is not yet granted.
+     *
+     * Note: ActivityManager.getRunningAppProcesses() only returns the caller's
+     * own process on Android 8+, so UsageEvents is the correct public API here.
      */
     private fun findForegroundPackage(): String {
-        val am = getSystemService(ActivityManager::class.java)
-        return am.runningAppProcesses
-            ?.filter { it.importance <= ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND_SERVICE }
-            ?.filterNot { proc -> proc.pkgList.any { it == packageName || it.startsWith("android") } }
-            ?.minByOrNull { it.importance }
-            ?.pkgList?.firstOrNull()
-            ?: "unknown"
+        return try {
+            val usm = getSystemService(UsageStatsManager::class.java)
+            val now = System.currentTimeMillis()
+            val events = usm.queryEvents(now - 5_000L, now)
+            val event = UsageEvents.Event()
+            var lastFgPkg: String? = null
+            while (events.hasNextEvent()) {
+                events.getNextEvent(event)
+                if (event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND &&
+                    !isSystemOrSelf(event.packageName)) {
+                    lastFgPkg = event.packageName
+                }
+            }
+            lastFgPkg ?: "unknown"
+        } catch (_: SecurityException) {
+            "unknown"  // PACKAGE_USAGE_STATS not yet granted — user hasn't enabled Usage Access
+        }
     }
+
+    private fun isSystemOrSelf(pkg: String) =
+        pkg == packageName ||
+        pkg.startsWith("android") ||
+        pkg == "com.android.systemui" ||
+        pkg == "com.samsung.android.systemui"
 
     private suspend fun onSensorActive(packageName: String, opStr: String) {
         val pm      = packageManager
