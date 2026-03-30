@@ -51,3 +51,7 @@ replay_pid*.log
 
 # Test results (generated, not source)
 app/src/test/**/__snapshots__/
+
+# On-device test screenshots and UI dumps (local artifacts — never commit)
+test_*.png
+ui*.xml
